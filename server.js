@@ -11,13 +11,11 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));  
 
-// MongoDB connection
 mongoose.connect("mongodb://127.0.0.1:27017/authApp")
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.error("MongoDB connection error:", err));
 
 
-// Schema
 const userSchema = new mongoose.Schema({
   username: String,
   email: String,
@@ -25,7 +23,6 @@ const userSchema = new mongoose.Schema({
 });
 const User = mongoose.model("User", userSchema);
 
-// 🔹 Signup
 app.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -39,7 +36,6 @@ app.post("/signup", async (req, res) => {
   res.json({ message: "Signup successful" });
 });
 
-// 🔹 Login
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -53,7 +49,7 @@ app.post("/login", async (req, res) => {
   res.json({ token });
 });
 
-// 🔹 Account (protected)
+
 app.get("/account", async (req, res) => {
   const token = req.headers["authorization"];
   if (!token) return res.status(401).json({ message: "Unauthorized" });
