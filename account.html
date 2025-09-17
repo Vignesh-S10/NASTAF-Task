@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Account</title>
+  <link rel="stylesheet" href="account.css">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="account.html">MyApp</a>
+    </div>
+    <nav>
+      <a href="account.html">Home</a>
+      <a href="#">About</a>
+      <button onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <div id="user">
+    <h1>Welcome</h1>
+    <p>Login Successfully  !!!</p>
+  </div>
+
+  <script>
+    async function loadUser() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      const res = await fetch("http://localhost:5000/account", {
+        headers: { Authorization: token },
+      });
+
+      if (res.ok) {
+        const user = await res.json();
+      
+         
+      } else {
+        alert("Session expired, please login again.");
+        window.location.href = "login.html";
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "home.html";
+    }
+
+    loadUser();
+  </script>
+</body>
+</html>
